@@ -7,7 +7,7 @@ Template.home.onCreated(function() {
         document.getElementById("join").disabled = true;
         document.getElementById("video").disabled = true;
         // for dynamic key
-        /*var dynamic_key;
+        var dynamic_key;
          console.log("Try to get dynamic key");
          var use_https = ('https:' == document.location.protocol ? true : false);
          if (use_https) {
@@ -22,7 +22,7 @@ Template.home.onCreated(function() {
          },
          success: function(response) {
          console.log(response.key);
-         dynamic_key = response.key;*/
+         dynamic_key = response.key;
 
         console.log("Init AgoraRTC client with _vendor key: " + key.value);
         client = AgoraRTC.createClient();
@@ -85,8 +85,8 @@ Template.home.onCreated(function() {
             console.log(evt.uid + " leaved from this channel");
         });
         // for dynamic key
-        /*}
-         });*/
+        }
+         });
     }
 
      leave = function() {
