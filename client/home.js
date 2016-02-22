@@ -1,15 +1,20 @@
 /**
  * Created by stevenkehoe on 2/11/16.
  */
-Template.home.event(function(){});
-
 Template.home.onCreated(function() {
     client = {}, localStream = {};
     join = function() {
         document.getElementById("join").disabled = true;
         document.getElementById("video").disabled = true;
         // for dynamic key
-        var dynamic_key = Meteor.call(generateDynamicKey(),{"channelName": channel.value});
+        Meteor.call('generateDynamicKey',channel.value, function(error, result){
+            if(error){
+                console.log("dynamic key error "+ error);
+            }else{
+                Session.set("dynamic_key", result);
+            }
+        });
+        var dynamic_key = Session.get("dynamic_key");
         console.log("Dynamic key: " + dynamic_key);
         /*
          console.log("Try to get dynamic key");
