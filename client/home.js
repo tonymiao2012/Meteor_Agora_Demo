@@ -1,13 +1,17 @@
 /**
  * Created by stevenkehoe on 2/11/16.
  */
+Template.home.event(function(){});
+
 Template.home.onCreated(function() {
     client = {}, localStream = {};
     join = function() {
         document.getElementById("join").disabled = true;
         document.getElementById("video").disabled = true;
         // for dynamic key
-        var dynamic_key;
+        var dynamic_key = Meteor.call(generateDynamicKey(),{"channelName": channel.value});
+        console.log("Dynamic key: " + dynamic_key);
+        /*
          console.log("Try to get dynamic key");
          var use_https = ('https:' == document.location.protocol ? true : false);
          if (use_https) {
@@ -23,12 +27,12 @@ Template.home.onCreated(function() {
          success: function(response) {
          console.log(response.key);
          dynamic_key = response.key;
-
-        console.log("Init AgoraRTC client with _vendor key: " + key.value);
+        */
+        //console.log("Init AgoraRTC client with _vendor key: " + key.value);
         client = AgoraRTC.createClient();
         // for dynamic key
         /*client.init(dynamic_key, function () {*/
-        client.init(key.value, function () {
+        client.init(dynamic_key, function () {
             console.log("AgoraRTC client initialized");
             client.join(channel.value, undefined, function(uid) {
                 console.log("User " + uid + " join channel successfully");
@@ -85,11 +89,11 @@ Template.home.onCreated(function() {
             console.log(evt.uid + " leaved from this channel");
         });
         // for dynamic key
-        }
-         });
+        //}
+        // });
     }
 
-     leave = function() {
+    leave = function() {
         document.getElementById("leave").disabled = true;
         client.leave(function () {
             console.log("Leavel channel successfully");
