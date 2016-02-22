@@ -16,25 +16,31 @@ Template.home.onCreated(function() {
                 console.log("AgoraRTC client initialized");
                 client.join(channel.value, undefined, function(uid) {
                     console.log("User " + uid + " join channel successfully");
-                    localStream = AgoraRTC.createStream({streamID: uid, audio: true, video: document.getElementById("video").checked, screen: false});
-                    if (document.getElementById("video").checked) {
-                        localStream.setVideoProfile('720p_1');
-                    }
-                    localStream.init(function() {
-                        console.log("getUserMedia successfully");
-                        localStream.play('agora_local');
-
-                        client.publish(localStream, function (err) {
-                            console.log("Publish local stream error: " + err);
+                    if(document.getElementById("admin").checked) {      //if start
+                        localStream = AgoraRTC.createStream({
+                            streamID: uid,
+                            audio: true,
+                            video: document.getElementById("video").checked,
+                            screen: false
                         });
+                        if (document.getElementById("video").checked) {
+                            localStream.setVideoProfile('720p_1');
+                        }
+                        localStream.init(function () {
+                            console.log("getUserMedia successfully");
+                            localStream.play('agora_local');
 
-                        client.on('stream-published', function (evt) {
-                            console.log("Publish local stream successfully");
+                            client.publish(localStream, function (err) {
+                                console.log("Publish local stream error: " + err);
+                            });
+
+                            client.on('stream-published', function (evt) {
+                                console.log("Publish local stream successfully");
+                            });
+                        }, function (err) {
+                            console.log("getUserMedia failed", err);
                         });
-                    }, function (err) {
-                        console.log("getUserMedia failed", err);
-                    });
-
+                    }   //End of if
                 }, function(err) {
                     console.log("Join channel failed", err);
                 });
@@ -54,10 +60,13 @@ Template.home.onCreated(function() {
             client.on('stream-subscribed', function (evt) {
                 var stream = evt.stream;
                 console.log("Subscribe remote stream successfully: " + stream.getId());
-                if ($('div#video #agora_remote'+stream.getId()).length === 0) {
-                    $('div#video').append('<div id="agora_remote'+stream.getId()+'" style="width:320px;height:240px"></div>');
+                if(!document.getElementById("admin").checked) {
+                    //if ($('div#video #agora_local' + stream.getId()).length === 0) {
+                    //    $('div#video').append('<div id="agora_local' + stream.getId() + '" style="width:320px;height:240px"></div>');
+                    //}
+                    stream.play('agora_local');
                 }
-                stream.play('agora_remote' + stream.getId());
+
             });
 
             client.on('stream-removed', function (evt) {
