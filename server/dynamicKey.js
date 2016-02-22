@@ -24,34 +24,13 @@ var encodeHMac = function(key, message) {
 
 Meteor.methods({
     generateDynamicKey: function(channelName){
-        //var http = require('http');
-        //var express = require('express');
-        //var AgoraSignGenerator = require('./lib/AgoraSignGenerator');
-
         var PORT = 8080;
-        /*
-        var app = express();
-        app.disable('x-powered-by');
-        app.set('port', PORT);
-        app.use(app.router);
-        var channelName = req.query.channelName;
-        if (!channelName){
-            return resp.status(400).json({'error':'channel name is required'}).send();
-        }
-        */
+
         var ts = Math.round(new Date().getTime() / 1000);
         var rnd =Math.round(Math.random()*100000000);
         var key = generateDynamicKey(vendor_key, sign_key, channelName, ts, rnd);
         console.log(key);
-        //console.log("Access-Control-Allow-Origin", "*")
-        //resp.header("Access-Control-Allow-Origin", "http://ip:port")
+
         return key;
     }
 });
-/*
-app.get('/dynamic_key', generateDynamicKey);
-
-http.createServer(app).listen(app.get('port'), function() {
-    console.log('AgoraSignServer starts at ' + app.get('port'));
-});
-*/

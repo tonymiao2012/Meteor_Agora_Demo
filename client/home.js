@@ -12,10 +12,6 @@ Template.home.onCreated(function() {
                 console.log("dynamic key error "+ error);
             }
             client = AgoraRTC.createClient();
-            //var dynamic_key = Session.get("dynamic_key");
-            // for dynamic key
-            /*client.init(dynamic_key, function () {*/
-            //console.log(dynamic_key);
             client.init(result, function () {
                 console.log("AgoraRTC client initialized");
                 client.join(channel.value, undefined, function(uid) {
@@ -73,28 +69,6 @@ Template.home.onCreated(function() {
                 console.log(evt.uid + " leaved from this channel");
             });
         });
-        /*
-         console.log("Try to get dynamic key");
-         var use_https = ('https:' == document.location.protocol ? true : false);
-         if (use_https) {
-         var url_str = "https://ip:port/dynamic_key?channelName=" + channel.value;
-         } else {
-         var url_str = "http://ip:port/dynamic_key?channelName=" + channel.value;
-         }
-         $.ajax({
-         url: url_str,
-         error: function() {
-         console.log("Failed to get dynamic key");
-         },
-         success: function(response) {
-         console.log(response.key);
-         dynamic_key = response.key;
-        */
-        //console.log("Init AgoraRTC client with _vendor key: " + key.value);
-
-        // for dynamic key
-        //}
-        // });
     }
 
     leave = function() {
