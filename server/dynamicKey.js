@@ -7,8 +7,8 @@ var sign_key = "3499b3ad3d264a0c81b820e90c4f1b60";
 var crypto = Npm.require('crypto');
 
 var generateDynamicKey = function(vendorKey, signKey, channelName, unixTs, randomInt) {
-    var unixTsStr = unixTs.toString();
-    var rndTxt = randomInt.toString(16);
+    var unixTsStr = unixTs.toString();     //Unix Time stamp, track time as a running total of seconds.
+    var rndTxt = randomInt.toString(16);   
     var randomIntStr = ("00000000" + rndTxt).substring(rndTxt.length);
     var sign = generateSignature(vendorKey, signKey, channelName, unixTsStr, randomIntStr);
     return sign + vendorKey + unixTsStr + randomIntStr;
