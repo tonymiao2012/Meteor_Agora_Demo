@@ -1,6 +1,3 @@
-/**
- * Created by stevenkehoe on 2/11/16.
- */
 Template.home.onCreated(function() {
     client = {}, localStream = {};
     join = function() {
